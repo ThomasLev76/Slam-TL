@@ -23,9 +23,8 @@ $_SESSION['token']=$token;
                 </div>
 
                 <div class="mb-3">
-                    <label for="valeur" class="form-label">Position du bras (en JSON)</label>
-                    <input type="text" name="valeur" id="valeur" class="form-control"
-                           placeholder='Exemple : {"angle": 45}'>
+                    <label for="valeur" class="form-label">Position du bras </label>
+                    <input type="text" name="valeur" id="valeur" class="form-control" >
                 </div>
 
                 <div class="mb-3">

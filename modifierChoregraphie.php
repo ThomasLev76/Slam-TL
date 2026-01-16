@@ -19,8 +19,7 @@ $stmt->execute([':id' => $id]);
 $chore = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$chore) die("Chorégraphie introuvable");
 
-// Récupérer les positions de bras
-$positions = $pdo->query("SELECT id FROM position_bras")->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Récupérer les fichiers audio
 $audioDir = __DIR__ . '/son';
@@ -56,15 +55,9 @@ include "header.php";
                 </div>
 
                 <div class="mb-3">
-                    <label for="position_bras_id" class="form-label">Position du bras (choisir par ID)</label>
-                    <select name="position_bras_id" id="position_bras_id" class="form-select" required>
-                        <?php foreach ($positions as $pos): ?>
-                            <option value="<?= $pos['id'] ?>"
-                                    <?= $pos['id'] == $chore['position_bras_id'] ? 'selected' : '' ?>>
-                                <?= $pos['id'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="position_bras" class="form-label">Position du Bras</label>
+                    <input type="text" name="position_bras" id="position_bras" class="form-control"
+                           value="<?= htmlspecialchars($chore['position_bras']) ?>" required>
                 </div>
 
                 <div class="mb-3">

@@ -14,7 +14,7 @@ if($tokenRecu != $tokenServeur){
 $id = (int)($_POST['id'] ?? 0);
 $nom = trim($_POST['nom'] ?? '');
 $ecran = trim($_POST['ecran'] ?? '');
-$position_bras_id = (int)($_POST['position_bras_id'] ?? 0);
+$position_bras = (int)($_POST['position_bras'] ?? 0);
 $son = trim($_POST['son'] ?? '');
 $volume = isset($_POST['volume']) ? (int)$_POST['volume'] : 50;
 $duree = trim($_POST['duree_mouv'] ?? '');
@@ -22,7 +22,7 @@ $duree = trim($_POST['duree_mouv'] ?? '');
 
 
 
-if (!$id || !$nom || !$position_bras_id) {
+if (!$id || !$nom || !$position_bras) {
     die("Champs obligatoires manquants");
 }
 
@@ -50,21 +50,18 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 
-    // Vérifier que la position de bras existe
-    $stmt = $pdo->prepare("SELECT id FROM position_bras WHERE id = :id");
-    $stmt->execute([':id' => $position_bras_id]);
-    if (!$stmt->fetch()) die("Position de bras invalide");
+
 
     // Mettre à jour la chorégraphie
     $update = $pdo->prepare("
         UPDATE chorégraphie
-        SET nom = :nom, `ecran` = :ecran, position_bras_id = :pos_id, son = :son, volume = :volume, duree_mouv = :duree
+        SET nom = :nom, `ecran` = :ecran, position_bras = :pos_bras, son = :son, volume = :volume, duree_mouv = :duree
         WHERE id = :id
     ");
     $update->execute([
         ':nom' => $nom,
         ':ecran' => $ecran,
-        ':pos_id' => $position_bras_id,
+        ':pos_bras' => $position_bras,
         ':son' => $son,
         ':id' => $id,
         ':volume' => $volume,

@@ -42,7 +42,7 @@ $choregraphies = $req->fetchAll();
                         <p class="card-text mb-2"><strong>Écran :</strong> <?= htmlspecialchars($chore['ecran']) ?></p>
 
                         <!-- Position bras -->
-                        <p class="card-text mb-2"><strong>Position bras :</strong> <?= $chore['position_bras_id'] ?></p>
+                        <p class="card-text mb-2"><strong>Position bras :</strong> <?= $chore['position_bras'] ?>°</p>
 
                         <!-- Durée -->
                         <p class="card-text mb-2"><strong>Durée :</strong> <?= $chore['duree_mouv'] ?> s</p>

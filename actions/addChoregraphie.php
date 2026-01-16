@@ -9,20 +9,15 @@ if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']) {
 // Récupération et nettoyage des champs POST
 $nom = filter_input(INPUT_POST, 'nom', FILTER_DEFAULT);
 $ecran = filter_input(INPUT_POST, 'ecran', FILTER_DEFAULT);
-$positionBras = filter_input(INPUT_POST, 'valeur', FILTER_DEFAULT);
+$position_bras = filter_input(INPUT_POST, 'valeur', FILTER_DEFAULT);
 $son = filter_input(INPUT_POST, 'son', FILTER_DEFAULT);
 $volume = filter_input(INPUT_POST, 'volume', FILTER_DEFAULT);
 $duree = filter_input(INPUT_POST, 'duree_mouv', FILTER_DEFAULT);
 
-// Nettoyage du JSON
-$positionBras = trim($positionBras);
-
-// Vérification que le JSON est valide
-json_decode($positionBras);
-if (json_last_error() !== JSON_ERROR_NONE) {
-    die("JSON invalide : " . json_last_error_msg());
+// Vérifier champs obligatoires
+if (!$nom || !$position_bras) {
+    die("Nom et position du bras obligatoires !");
 }
-
 
 include "../config.php";
 
@@ -30,27 +25,20 @@ include "../config.php";
     $pdo = new PDO(
         'mysql:host=' . config::HOST . ';dbname=' . config::DBNAME,
         config::USER,
-        config::PASSWORD,
+        config::PASSWORD
 );
 
 
-    // Insertion de la position du bras
-    $stmt1 = $pdo->prepare("INSERT INTO position_bras (valeur) VALUES (:valeur)");
-    $stmt1->bindParam(':valeur', $positionBras);
-    $stmt1->execute();
-
-    // Récupération de l'ID généré
-    $position_id = $pdo->lastInsertId();
 
     // Insertion de la chorégraphie
-    $stmt2 = $pdo->prepare("INSERT INTO chorégraphie (nom, ecran, position_bras_id, son, volume, duree_mouv) 
-                            VALUES (:nom, :ecran, :position_bras_id, :son, :volume, :duree_mouv)");
+    $stmt2 = $pdo->prepare("INSERT INTO chorégraphie (nom, ecran, position_bras, son, volume, duree_mouv) 
+                            VALUES (:nom, :ecran, :position_bras, :son, :volume, :duree_mouv)");
     $stmt2->bindParam(':duree_mouv', $duree);
     $stmt2->bindParam(':volume', $volume);
     $stmt2->bindParam(':ecran', $ecran);
     $stmt2->bindParam(':son', $son);
     $stmt2->bindParam(':nom', $nom);;
-    $stmt2->bindParam(':position_bras_id', $position_id);
+    $stmt2->bindParam(':position_bras', $position_bras);
     $stmt2->execute();
 
 header("Location: ../index.php");
