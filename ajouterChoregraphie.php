@@ -7,91 +7,86 @@ $token=rand(0,1000000);
 $_SESSION['token']=$token;
 ?>
 
-<h1>Ajouter une chorégraphie</h1>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title mb-4">Ajouter une chorégraphie</h2>
 
-<form action="actions/addChoregraphie.php" method="post">
+            <form action="actions/addChoregraphie.php" method="post">
 
-    <!-- TOKEN CSRF -->
-    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
+                <!-- TOKEN CSRF -->
+                <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
 
-    <label>Nom de la chorégraphie *</label><br>
-    <input type="text" name="nom" required><br><br>
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom de la chorégraphie *</label>
+                    <input type="text" name="nom" id="nom" class="form-control" required>
+                </div>
 
-    <label>Position du bras (en JSON)</label><br>
-    <input type="text" name="valeur"
-           placeholder='Exemple : {"angle": 45}'><br><br>
+                <div class="mb-3">
+                    <label for="valeur" class="form-label">Position du bras (en JSON)</label>
+                    <input type="text" name="valeur" id="valeur" class="form-control"
+                           placeholder='Exemple : {"angle": 45}'>
+                </div>
 
-    <label>Durée du mouvement (en seconde)</label><br>
-    <input type="text" name="duree_mouv" required><br><br>
+                <div class="mb-3">
+                    <label for="duree_mouv" class="form-label">Durée du mouvement (en seconde)</label>
+                    <input type="number" name="duree_mouv" id="duree_mouv" class="form-control" required min="1">
+                </div>
 
-    <label>Message à afficher sur l’écran</label><br>
-    <input type="text" name="ecran"><br><br>
+                <div class="mb-3">
+                    <label for="ecran" class="form-label">Message à afficher sur l’écran</label>
+                    <input type="text" name="ecran" id="ecran" class="form-control">
+                </div>
 
-    <?php
-    $audioDir = __DIR__ . '/son';
-    $audioFiles = [];
+                <?php
+                $audioDir = __DIR__ . '/son';
+                $audioFiles = [];
 
-    if (is_dir($audioDir)) {
-        $files = scandir($audioDir);
+                if (is_dir($audioDir)) {
+                    foreach (scandir($audioDir) as $file) {
+                        if ($file === '.' || $file === '..') continue;
+                        if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'mp3') {
+                            $audioFiles[] = $file;
+                        }
+                    }
+                }
+                ?>
 
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
-            }
+                <div class="mb-3">
+                    <label for="son" class="form-label">Son</label>
+                    <select name="son" id="son" class="form-select w-50">
+                        <option value="">— Aucun son —</option>
+                        <?php foreach ($audioFiles as $file): ?>
+                            <option value="<?= htmlspecialchars($file) ?>"
+                                    <?= (!empty($chore['son']) && $chore['son'] === $file) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($file) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-            if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'mp3') {
-                $audioFiles[] = $file;
-            }
-        }
-    }
-    ?>
-    <div class="mb-3">
-        <label class="form-label">Son</label>
-        <select name="son" class="form-select w-50">
-            <option value="">— Aucun son —</option>
-            <?php foreach ($audioFiles as $file): ?>
-                <option value="<?= htmlspecialchars($file) ?>"
-                        <?= (!empty($chore['son']) && $chore['son'] === $file) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($file) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+                <div class="mb-3">
+                    <label for="volume" class="form-label">
+                        Volume : <span id="volumeValue">50</span> %
+                    </label>
+                    <input type="range" class="form-range" id="volume" name="volume" min="0" max="100" value="50" style="width: 300px;">
+                </div>
+
+                <script>
+                    const volume = document.getElementById('volume');
+                    const volumeValue = document.getElementById('volumeValue');
+                    volume.addEventListener('input', () => {
+                        volumeValue.textContent = volume.value;
+                    });
+                </script>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success me-2">Enregistrer</button>
+                    <a href="index.php" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <br><br>
-
-    <div class="mb-3">
-        <label for="volume" class="form-label">
-            Volume : <span id="volumeValue">50</span> %
-        </label><br>
-        <input
-                type="range"
-                class="form-range"
-                id="volume"
-                name="volume"
-                min="0"
-                max="100"
-                value="50"
-                style="width: 300px;"
-        >
-    </div>
-
-    <script>
-        const volume = document.getElementById('volume');
-        const volumeValue = document.getElementById('volumeValue');
-
-        volume.addEventListener('input', () => {
-            volumeValue.textContent = volume.value;
-        });
-    </script>
-
-    <button type="submit">Enregistrer</button>
-</form>
-
-<a href="index.php">Retour à la liste</a>
-
-</body>
-</html>
-<?php
-include "footer.php";
-?>
+<?php include "footer.php"; ?>
