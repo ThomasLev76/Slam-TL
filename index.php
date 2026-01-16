@@ -53,6 +53,8 @@ $choregraphies = $req->fetchAll();
                             <a href="supprimerChoregraphie.php?id=<?= $chore['id'] ?>"
                                class="btn btn-sm btn-danger"
                                onclick="return confirm('Supprimer cette chorégraphie ?')">Supprimer</a>
+                            <a href="envoyerChoregraphie.php?id=<?= $chore['id'] ?>"
+                               class="btn btn-sm btn-success">Envoyer</a>
                         </div>
                     </div>
                 </div>

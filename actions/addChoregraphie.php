@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Vérification du token CSRF
+// Vérification du token
 if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']) {
     die("Token invalide");
 }
