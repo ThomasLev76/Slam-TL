@@ -50,6 +50,27 @@ $positions = $pdo->query("SELECT id FROM position_bras")->fetchAll(PDO::FETCH_AS
     <label>Son</label><br>
     <input type="text" name="son" value="<?= htmlspecialchars($chore['son']) ?>"><br><br>
 
+    <input
+            type="range"
+            class="form-range"
+            id="volume"
+            name="volume"
+            min="0"
+            max="100"
+            value="<?= (int)$chore['volume'] ?>"
+    >
+    <span id="volumeValue"><?= (int)$chore['volume'] ?></span> %
+
+    <script>
+        const volume = document.getElementById('volume');
+        const volumeValue = document.getElementById('volumeValue');
+
+        volume.addEventListener('input', () => {
+            volumeValue.textContent = volume.value;
+        });
+    </script>
+    <br>
+
     <button type="submit">Enregistrer les modifications</button>
 </form>
 

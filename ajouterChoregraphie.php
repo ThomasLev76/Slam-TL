@@ -27,6 +27,31 @@ $_SESSION['token']=$token;
     <label>Son</label><br>
     <input type="text" name="son"><br><br>
 
+    <div class="mb-3">
+        <label for="volume" class="form-label">
+            Volume : <span id="volumeValue">50</span> %
+        </label><br>
+        <input
+                type="range"
+                class="form-range"
+                id="volume"
+                name="volume"
+                min="0"
+                max="100"
+                value="50"
+                style="width: 300px;"
+        >
+    </div>
+
+    <script>
+        const volume = document.getElementById('volume');
+        const volumeValue = document.getElementById('volumeValue');
+
+        volume.addEventListener('input', () => {
+            volumeValue.textContent = volume.value;
+        });
+    </script>
+
     <button type="submit">Enregistrer</button>
 </form>
 
