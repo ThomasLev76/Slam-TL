@@ -24,7 +24,19 @@ $volume = isset($_POST['volume']) ? (int)$_POST['volume'] : 50;
 if (!$id || !$nom || !$position_bras_id) {
     die("Champs obligatoires manquants");
 }
+
 // Sécurité
+$son = $_POST['son'] ?? '';
+
+if ($son !== '') {
+    $son = basename($son); // bloque ../
+    $audioPath = __DIR__ . '/../son/' . $son;
+
+    if (!file_exists($audioPath)) {
+        die("Fichier audio invalide");
+    }
+}
+
 if ($volume < 0 || $volume > 100) {
     die("Volume invalide");
 }

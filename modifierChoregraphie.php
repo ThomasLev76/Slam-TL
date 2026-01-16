@@ -23,6 +23,11 @@ if (!$chore) die("Chorégraphie introuvable");
 
 // Récupérer les positions de bras
 $positions = $pdo->query("SELECT id FROM position_bras")->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare("SELECT * FROM chorégraphie WHERE id = :id");
+$stmt->execute([':id' => $id]);
+$chore = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <h1>Modifier la chorégraphie</h1>
@@ -47,8 +52,37 @@ $positions = $pdo->query("SELECT id FROM position_bras")->fetchAll(PDO::FETCH_AS
     <label>Message à afficher sur l’écran</label><br>
     <input type="text" name="ecran" value="<?= htmlspecialchars($chore['ecran']) ?>"><br><br>
 
-    <label>Son</label><br>
-    <input type="text" name="son" value="<?= htmlspecialchars($chore['son']) ?>"><br><br>
+    <?php
+    $audioDir = __DIR__ . '/son';
+    $audioFiles = [];
+
+    if (is_dir($audioDir)) {
+        $files = scandir($audioDir);
+
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'mp3') {
+                $audioFiles[] = $file;
+            }
+        }
+    }
+    ?>
+    <div class="mb-3">
+        <label class="form-label">Son</label>
+        <select name="son" class="form-select w-50">
+            <option value="">— Aucun son —</option>
+            <?php foreach ($audioFiles as $file): ?>
+                <option value="<?= htmlspecialchars($file) ?>"
+                        <?= (!empty($chore['son']) && $chore['son'] === $file) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($file) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    ><br><br>
 
     <input
             type="range"
