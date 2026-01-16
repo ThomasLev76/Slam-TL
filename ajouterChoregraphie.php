@@ -21,6 +21,9 @@ $_SESSION['token']=$token;
     <input type="text" name="valeur"
            placeholder='Exemple : {"angle": 45}'><br><br>
 
+    <label>Durée du mouvement (en seconde)</label><br>
+    <input type="text" name="duree_mouv" required><br><br>
+
     <label>Message à afficher sur l’écran</label><br>
     <input type="text" name="ecran"><br><br>
 

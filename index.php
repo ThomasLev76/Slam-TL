@@ -25,6 +25,7 @@ $choregraphies = $req->fetchAll();
         <th>Son</th>
         <th>Écran</th>
         <th>Position bras</th>
+        <th>Durée du mouvement</th>
 
     </tr>
     <?php
@@ -36,6 +37,7 @@ $choregraphies = $req->fetchAll();
             <td><?php echo $choregraphie["son"]?></td>
             <td><?php echo $choregraphie["ecran"]?></td>
             <td><?php echo $choregraphie["position_bras_id"] ?></td>
+            <td><?php echo $choregraphie["duree_mouv"] ?></td>
 
             <td>
                 <a href="modifierChoregraphie.php?id=<?php echo $choregraphie["id"] ?>"

@@ -12,6 +12,7 @@ $ecran = filter_input(INPUT_POST, 'ecran', FILTER_DEFAULT);
 $positionBras = filter_input(INPUT_POST, 'valeur', FILTER_DEFAULT);
 $son = filter_input(INPUT_POST, 'son', FILTER_DEFAULT);
 $volume = filter_input(INPUT_POST, 'volume', FILTER_DEFAULT);
+$duree = filter_input(INPUT_POST, 'duree_mouv', FILTER_DEFAULT);
 
 // Nettoyage du JSON
 $positionBras = trim($positionBras);
@@ -42,8 +43,9 @@ include "../config.php";
     $position_id = $pdo->lastInsertId();
 
     // Insertion de la chorégraphie
-    $stmt2 = $pdo->prepare("INSERT INTO chorégraphie (nom, ecran, position_bras_id, son, volume) 
-                            VALUES (:nom, :ecran, :position_bras_id, :son, :volume)");
+    $stmt2 = $pdo->prepare("INSERT INTO chorégraphie (nom, ecran, position_bras_id, son, volume, duree_mouv) 
+                            VALUES (:nom, :ecran, :position_bras_id, :son, :volume, :duree_mouv)");
+    $stmt2->bindParam(':duree_mouv', $duree);
     $stmt2->bindParam(':volume', $volume);
     $stmt2->bindParam(':ecran', $ecran);
     $stmt2->bindParam(':son', $son);

@@ -36,7 +36,7 @@ $chore = $stmt->fetch(PDO::FETCH_ASSOC);
     <input type="hidden" name="id" value="<?= $chore['id'] ?>">
     <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
 
-    <label>Nom *</label><br>
+    <label>Nom</label><br>
     <input type="text" name="nom" value="<?= htmlspecialchars($chore['nom']) ?>" required><br><br>
 
     <label>Position du bras (choisir par ID)</label><br>
@@ -47,6 +47,9 @@ $chore = $stmt->fetch(PDO::FETCH_ASSOC);
             </option>
         <?php endforeach; ?>
     </select><br><br>
+
+    <label>Durée du mouvement (en seconde)</label><br>
+    <input type="text" name="duree_mouv" value="<?= htmlspecialchars($chore['duree_mouv']) ?>" required><br><br>
 
 
     <label>Message à afficher sur l’écran</label><br>
@@ -72,7 +75,7 @@ $chore = $stmt->fetch(PDO::FETCH_ASSOC);
     ?>
     <div class="mb-3">
         <label class="form-label">Son</label>
-        <select name="son" class="form-select w-50">
+        <select name="son" class="form-select w-50"><br>
             <option value="">— Aucun son —</option>
             <?php foreach ($audioFiles as $file): ?>
                 <option value="<?= htmlspecialchars($file) ?>"
@@ -82,7 +85,7 @@ $chore = $stmt->fetch(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </select>
     </div>
-    ><br><br>
+    <br><br>
 
     <input
             type="range"
@@ -92,7 +95,7 @@ $chore = $stmt->fetch(PDO::FETCH_ASSOC);
             min="0"
             max="100"
             value="<?= (int)$chore['volume'] ?>"
-    >
+>
     <span id="volumeValue"><?= (int)$chore['volume'] ?></span> %
 
     <script>

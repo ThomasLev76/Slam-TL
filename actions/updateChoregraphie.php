@@ -17,6 +17,7 @@ $ecran = trim($_POST['ecran'] ?? '');
 $position_bras_id = (int)($_POST['position_bras_id'] ?? 0);
 $son = trim($_POST['son'] ?? '');
 $volume = isset($_POST['volume']) ? (int)$_POST['volume'] : 50;
+$duree = trim($_POST['duree_mouv'] ?? '');
 
 
 
@@ -57,7 +58,7 @@ try {
     // Mettre à jour la chorégraphie
     $update = $pdo->prepare("
         UPDATE chorégraphie
-        SET nom = :nom, `ecran` = :ecran, position_bras_id = :pos_id, son = :son, volume = :volume
+        SET nom = :nom, `ecran` = :ecran, position_bras_id = :pos_id, son = :son, volume = :volume, duree_mouv = :duree
         WHERE id = :id
     ");
     $update->execute([
@@ -66,7 +67,8 @@ try {
         ':pos_id' => $position_bras_id,
         ':son' => $son,
         ':id' => $id,
-        ':volume' => $volume
+        ':volume' => $volume,
+         ':duree' => $duree
     ]);
 
     header("Location: ../index.php");
