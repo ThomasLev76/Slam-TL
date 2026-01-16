@@ -1,4 +1,7 @@
 <?php
+session_start();
+$_SESSION['token'] = $_SESSION['token'] ?? bin2hex(random_bytes(32));
+
 include "header.php";
 ?>
 
@@ -19,7 +22,9 @@ $choregraphies = $req->fetchAll();
     <tr>
         <th>id</th>
         <th>Nom</th>
-        <th>Text à afficher</th>
+        <th>Son</th>
+        <th>Écran</th>
+        <th>Position bras</th>
 
     </tr>
     <?php
@@ -28,13 +33,15 @@ $choregraphies = $req->fetchAll();
         <tr>
             <td><?php echo $choregraphie["id"] ?></td>
             <td><?php echo $choregraphie["nom"] ?></td>
-            <td><?php echo $choregraphie["text"]?></td>
+            <td><?php echo $choregraphie["son"]?></td>
+            <td><?php echo $choregraphie["ecran"]?></td>
+            <td><?php echo $choregraphie["position_bras_id"] ?></td>
 
             <td>
                 <a href="modifierChoregraphie.php?id=<?php echo $choregraphie["id"] ?>"
                    class="btn btn-sm btn-warning">Modifier</a>
-                <a href="supprimerChoregraphie.php?id=<?php echo $choregraphie["id"] ?>"
-                   class="btn btn-sm btn-danger">Supprimer</a>
+                <a href="supprimerChoregraphie.php?id=<?php echo $choregraphie["id"] ?>" class="btn btn-sm btn-danger">Supprimer</a>
+
 
             </td>
         </tr>
