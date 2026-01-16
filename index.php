@@ -18,40 +18,52 @@ $req = $pdo->prepare("select * from chorégraphie");
 $req->execute();
 $choregraphies = $req->fetchAll();
 ?>
-<table class="table table-stripped">
-    <tr>
-        <th>id</th>
-        <th>Nom</th>
-        <th>Son</th>
-        <th>Écran</th>
-        <th>Position bras</th>
-        <th>Durée du mouvement</th>
+<div class="container mt-4">
+    <h1 class="mb-4">Vos chorégraphies</h1>
 
-    </tr>
-    <?php
-    foreach ($choregraphies as $choregraphie) {
-        ?>
-        <tr>
-            <td><?php echo $choregraphie["id"] ?></td>
-            <td><?php echo $choregraphie["nom"] ?></td>
-            <td><?php echo $choregraphie["son"]?></td>
-            <td><?php echo $choregraphie["ecran"]?></td>
-            <td><?php echo $choregraphie["position_bras_id"] ?></td>
-            <td><?php echo $choregraphie["duree_mouv"] ?></td>
+    <div class="row">
+        <?php foreach ($choregraphies as $chore): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><?= htmlspecialchars($chore['nom']) ?></h5>
 
-            <td>
-                <a href="modifierChoregraphie.php?id=<?php echo $choregraphie["id"] ?>"
-                   class="btn btn-sm btn-warning">Modifier</a>
-                <a href="supprimerChoregraphie.php?id=<?php echo $choregraphie["id"] ?>" class="btn btn-sm btn-danger">Supprimer</a>
+                        <!-- Son -->
+                        <?php if (!empty($chore['son'])): ?>
+                            <p class="card-text mb-2">
+                                <strong>Son :</strong> <?= htmlspecialchars($chore['son']) ?>
+                            </p>
+                            <audio controls class="w-100 mb-2">
+                                <source src="son/<?= htmlspecialchars($chore['son']) ?>" type="audio/mpeg">
+                            </audio>
+                        <?php endif; ?>
+
+                        <!-- Écran -->
+                        <p class="card-text mb-2"><strong>Écran :</strong> <?= htmlspecialchars($chore['ecran']) ?></p>
+
+                        <!-- Position bras -->
+                        <p class="card-text mb-2"><strong>Position bras :</strong> <?= $chore['position_bras_id'] ?></p>
+
+                        <!-- Durée -->
+                        <p class="card-text mb-2"><strong>Durée :</strong> <?= $chore['duree_mouv'] ?> s</p>
+
+                        <div class="mt-auto d-flex justify-content-between">
+                            <a href="modifierChoregraphie.php?id=<?= $chore['id'] ?>"
+                               class="btn btn-sm btn-warning">Modifier</a>
+                            <a href="supprimerChoregraphie.php?id=<?= $chore['id'] ?>"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Supprimer cette chorégraphie ?')">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <a href="ajouterChoregraphie.php" class="btn btn-success mt-3">Ajouter une chorégraphie</a>
+</div>
 
 
-            </td>
-        </tr>
-        <?php
-    }
-    ?>
-</table>
-<a href="ajouterChoregraphie.php" class="btn btn-success">Ajouter</a>
 <?php
 include "footer.php";
 ?>
